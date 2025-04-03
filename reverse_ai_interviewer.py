@@ -5,7 +5,7 @@ import fitz  # PyMuPDF for PDF parsing
 import openai
 
 # Set your API key
-openai.api_key = "your-openai-api-key"
+openai.api_key = st.secrets["openai"]["api_key"]
 
 st.title("🧠 Reverse AI Interviewer")
 st.write("Generate smart questions to ask your interviewer — based on your resume and role.")
