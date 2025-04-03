@@ -1,11 +1,9 @@
-# reverse_ai_interviewer.py
-
 import streamlit as st
-import fitz  # PyMuPDF for PDF parsing
-import openai
+import fitz  # for PDF parsing
+from openai import OpenAI  # import the new client class
 
-# Set your API key
-openai.api_key = st.secrets["openai"]["api_key"]
+# Initialize the OpenAI client with your API key from Streamlit secrets
+client = OpenAI(api_key=st.secrets["openai"]["api_key"])
 
 st.title("🧠 Reverse AI Interviewer")
 st.write("Generate smart questions to ask your interviewer — based on your resume and role.")
@@ -35,13 +33,15 @@ if st.button("Generate Interviewer Questions"):
         """
 
         with st.spinner("Crafting your custom questions..."):
-            response = openai.completions.create(
+            # Updated API call using the client instance
+            response = client.chat.completions.create(
                 model="gpt-4",
-                prompt=prompt,
+                messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
             )
 
-            questions = response["choices"][0]["message"]["content"]
+            # Access the response content from the pydantic model
+            questions = response.choices[0].message.content
             st.subheader("🎯 Questions to Ask the Interviewer:")
             st.markdown(questions)
     else:
