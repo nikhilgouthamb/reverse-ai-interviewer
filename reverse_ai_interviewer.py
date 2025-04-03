@@ -37,7 +37,7 @@ if st.button("Generate Interviewer Questions"):
         with st.spinner("Crafting your custom questions..."):
             response = openai.completions.create(
                 model="gpt-4",
-                messages=[{"role": "user", "content": prompt}],
+                prompt=prompt,
                 temperature=0.7,
             )
 
